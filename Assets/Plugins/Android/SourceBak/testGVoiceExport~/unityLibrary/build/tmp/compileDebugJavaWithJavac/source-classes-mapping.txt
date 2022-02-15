@@ -1,0 +1,6 @@
+com/unity3d/player/BuildConfig.java
+ com.unity3d.player.BuildConfig
+com/tickstudio/testgvoice/MainActivity.java
+ com.tickstudio.testgvoice.MainActivity
+com/unity3d/player/UnityPlayerActivity.java
+ com.unity3d.player.UnityPlayerActivity
