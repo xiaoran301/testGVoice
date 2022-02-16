@@ -1,3 +1,11 @@
 /Temp
 /Library
 /Logs
+/Assets/Plugins/Android/SourceBak/testGVoiceExport~/.idea
+/Assets/Plugins/Android/SourceBak/testGVoiceExport~/.gradle
+/Assets/Plugins/Android/SourceBak/testGVoiceExport~/build
+/Assets/Plugins/Android/SourceBak/testGVoiceExport~/unityLibrary/build
+/.idea
+/obj
+/*.sln
+/*.csproj
