@@ -13,9 +13,11 @@ task deleteJar(type: Delete){
 
 task createJar(type: Copy){
     from('build/intermediates/aar_main_jar/release')
-    into('out/')
+    //into('out/')
+    into('../../../')
     include('classes.jar')
     rename('classes.jar', 'testGVoice.jar')
+
 }
 createJar.dependsOn(deleteJar,build)
 
