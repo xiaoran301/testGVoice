@@ -524,7 +524,7 @@ namespace gcloud_voice
 				if (instance == null)
 				{
 					instance = new GCloudVoiceEngine();
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
 					GCloudVoiceEngine.PrintLog("GCloudVoice_C# API: Call java from c sharp before");
 					var activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 					var currentActivity = activity.GetStatic<AndroidJavaObject>("currentActivity");
