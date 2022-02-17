@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using gcloud_voice;
-using TMPro;
-using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;
+#if UNITY_ANDROID
+using UnityEngine.Android;
 
+#endif
 
 public enum LineState
 {
@@ -17,8 +17,6 @@ public enum LineState
 public class TestGVoiceDemo : MonoBehaviour
 {
     private static TestGVoiceDemo _Instance;
-    private const string AppId = "285769993";
-    private const string AppKey = "234a9f772ae631f1bc3635cdb29e9db2";
 
     private IGCloudVoice _voiceEngine;
     private string _openId;
@@ -30,6 +28,9 @@ public class TestGVoiceDemo : MonoBehaviour
     public delegate void OutputConsole(string str);
 
     public event OutputConsole OutputConsoleImplemnt;
+
+    public string AppId = "gcloud.chiji";
+    public string AppKey = "123";
     public LineState RoomState { set; get; }
     public LineState MicState { set; get; }
     public LineState SpeakerState { set; get; }
@@ -72,6 +73,7 @@ public class TestGVoiceDemo : MonoBehaviour
             // 注册回调
             _voiceEngine.OnJoinRoomComplete += OnJoinRoom;
             _voiceEngine.OnQuitRoomComplete += OnQuitRoom;
+            _voiceEngine.OnMemberVoice += OnMemberVoice;
 
             // 启动poll携程
             StartCoroutine(UpdateVoicePoll());
@@ -111,7 +113,7 @@ public class TestGVoiceDemo : MonoBehaviour
 
     void OnJoinRoom(GCloudVoiceCompleteCode code, string roomName, int memberID)
     {
-        if (code != GCloudVoiceCompleteCode.GV_ON_OK)
+        if (code != GCloudVoiceCompleteCode.GV_ON_JOINROOM_SUCC)
         {
             RoomState = LineState.OffLine;
             PrintLog(String.Format("Join room callback failed({0})", code));
@@ -121,12 +123,13 @@ public class TestGVoiceDemo : MonoBehaviour
         RoomState = LineState.OnLine;
 
         PrintLog(String.Format("Join room callback sucess,room:{0}, memberID:{1}", roomName, memberID));
-        OpenSpeaker();
+        // OpenSpeaker();
+        // OpenMic();
     }
 
     void OnQuitRoom(GCloudVoiceCompleteCode code, string roomName, int memberID)
     {
-        if (code != GCloudVoiceCompleteCode.GV_ON_OK)
+        if (code != GCloudVoiceCompleteCode.GV_ON_QUITROOM_SUCC)
         {
             PrintLog(String.Format("Quit room callback failed({0})", code));
             return;
@@ -177,18 +180,19 @@ public class TestGVoiceDemo : MonoBehaviour
         PrintLog(String.Format("退出房间调用{0}({1}).", logStr, ret));
     }
 
-    public void OpenMic()
+    public bool OpenMic()
     {
         if (MicState != LineState.OffLine)
         {
             PrintLog("非Off，不能打开mic");
-            return;
+            return false;
         }
 
         MicState = LineState.Processing;
         var ret = _voiceEngine.OpenMic();
         var logStr = (ret == (int) GCloudVoiceErr.GCLOUD_VOICE_SUCC) ? "Sucess" : "Failed";
         PrintLog(String.Format("OpenMic调用{0}({1}).", logStr, ret));
+        return true;
     }
 
     public void CloseMic()
@@ -231,5 +235,16 @@ public class TestGVoiceDemo : MonoBehaviour
         var ret = _voiceEngine.CloseSpeaker();
         var logStr = (ret == (int) GCloudVoiceErr.GCLOUD_VOICE_SUCC) ? "Sucess" : "Failed";
         PrintLog(String.Format("CloseSpeaker调用{0}({1}).", logStr, ret));
+    }
+
+    public void OnMemberVoice(int[] members,int count)
+    {
+        string tmpstr;
+        for (int i = 0; i < count; i++)
+        {
+            tmpstr = "[OnMemberVoice:members:" + members[2 * i] + ",state:" + members[2 * i + 1] + "]";
+
+            PrintLog(tmpstr);
+        }
     }
 }

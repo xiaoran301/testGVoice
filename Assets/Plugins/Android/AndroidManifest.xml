@@ -3,6 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.TickStudio.testGVoice1"
     xmlns:tools="http://schemas.android.com/tools">
+
+ <!-- TODO SDK接入必须权限模块 START -->
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application>
         <activity android:name="com.tickstudio.testgvoice.MainActivity"
                   android:theme="@style/UnityThemeSelector">
